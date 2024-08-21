@@ -1,11 +1,9 @@
-name: Run Tests and Generate Coverage on PR
+name: Run Tests and Generate Coverage
 
 on:
   pull_request:
     branches:
       - develop
-    paths:
-      - 'features/*'
 
 jobs:
   test:
