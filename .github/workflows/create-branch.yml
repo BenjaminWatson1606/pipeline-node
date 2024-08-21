@@ -1,0 +1,19 @@
+name: Create Branch on Issue Assignment
+
+on:
+  issues:
+    types: [assigned]
+
+jobs:
+  create-branch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Create new branch
+        run: |
+          ISSUE_TITLE_SLUG=$(echo "${{ github.event.issue.title }}" | tr '[:upper:]' '[:lower:]' | sed 's/ /-/g' | sed 's/[^a-zA-Z0-9-]//g')
+          ISSUE_BRANCH="feature/issue-${{ github.event.issue.number }}-${ISSUE_TITLE_SLUG}"
+          git checkout develop
+          git checkout -b $ISSUE_BRANCH
+          git push origin $ISSUE_BRANCH
