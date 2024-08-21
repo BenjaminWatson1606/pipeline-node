@@ -1,11 +1,9 @@
-name: Run Tests on PR
+name: Run Tests and Generate Coverage
 
 on:
   pull_request:
     branches:
       - develop
-    paths:
-      - 'features/*'
 
 jobs:
   test:
@@ -21,5 +19,10 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - name: Install dependencies
         run: npm install
-      - name: Run tests
-        run: npm run test
+      - name: Run tests with coverage
+        run: npm run test:coverage
+      - name: Upload coverage report
+        uses: actions/upload-artifact@v2
+        with:
+          name: coverage
+          path: coverage.txt
