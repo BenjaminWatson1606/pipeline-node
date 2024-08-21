@@ -1,0 +1,21 @@
+name: Lint Commits
+
+on:
+  push:
+    branches:
+      - "features/*"
+      - "hotfix/*"
+
+jobs:
+  commitlint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+      - name: Install dependencies
+        run: npm install
+      - name: Lint commits
+        run: npx commitlint --from=HEAD~1
