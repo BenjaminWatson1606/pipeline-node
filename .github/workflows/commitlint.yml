@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [16, 18] 
+        node-version: [16, 18]
     steps:
       - uses: actions/checkout@v2
       - name: Install Node.js
@@ -20,5 +20,12 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - name: Install dependencies
         run: npm install
+      - name: Fetch the base branch
+        run: git fetch origin main:main
       - name: Lint commits
-        run: npx commitlint --from=HEAD~1
+        run: |
+          if [ $(git rev-list --count HEAD) -gt 1 ]; then
+            npx commitlint --from=origin/main
+          else
+            echo "Skipping commit linting because there are fewer than 2 commits."
+          fi
